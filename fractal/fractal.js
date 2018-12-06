@@ -33,7 +33,6 @@ img.onload = function() {
 	draw_goats(ctx, img, direction, reduction, count_goats, origine, first_size);
 	
 	canvas.onclick = function(e) {
-		console.log(e);
 		let x = e.clientX - canvas.width / 2;
 		let y = e.clientY - canvas.height / 2;
 		let direction = {x: x/ count_goats, y: y/count_goats};
