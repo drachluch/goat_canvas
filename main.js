@@ -44,7 +44,7 @@ img.onload = function() {
 	};
 	
 }
-img.src = "chevre_transparente3.png";
+img.src = "resource/image/chevre_transparente3.png";
 
 
 
