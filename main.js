@@ -8,7 +8,6 @@ class Goat
 	}
 }
 
-
 class Game
 {
 	constructor()
@@ -19,7 +18,7 @@ class Game
 		this.goat_image_scale = 0.2;
 
 		this.goat_image = new Image();
-		this.goat_image.src = "chevre_transparente3.png";
+		this.goat_image.src = "resource/image/chevre_transparente3.png";
 
 		this.canvas.addEventListener("click", (event)=>{
 			this.goats.push(new Goat(event.offsetX, event.offsetY));
