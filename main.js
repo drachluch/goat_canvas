@@ -1,4 +1,13 @@
 
+window.addEventListener('resize', resizeCanvas, false);
+var canvas = document.getElementById('canvas');
+
+function resizeCanvas() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+resizeCanvas();
+
 function draw_goat(ctx, img, center, howbig) {
 	let width = img.width * howbig;
 	let height = img.height * howbig;
@@ -20,9 +29,6 @@ var img = new Image();
 img.onload = function() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
-
-	ctx.fillStyle = "yellow";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	
 	var direction = {x: 0, y: 0};
 	var reduction = .75;
@@ -34,7 +40,6 @@ img.onload = function() {
 	draw_goats(ctx, img, direction, reduction, norme, count_goats, origine, first_size);
 	
 	canvas.onclick = function(e) {
-		console.log(e);
 		let x = e.clientX - canvas.width / 2;
 		let y = e.clientY - canvas.height / 2;
 		let norme = Math.sqrt(x * x + y * y);
