@@ -1,5 +1,12 @@
 
-var image_urls = ["resource/image/chevre_transparente3.png", "resource/image/chevre_transparente3_feu.png"];
+var image_urls = [
+	"resource/image/chevre_transparente3.png",
+	"resource/image/chevre_transparente3_feu.png",
+	"resource/image/chevre_transparente3_feu_corne.png",
+	"resource/image/chevre_transparente3_feu_petite_corne.png",
+	"resource/image/chevre_transparente3_feu_corne2.png",
+	"resource/image/chevre_transparente3_feu_grande_corne.png"
+	];
 const hit_box_width = 60;
 const hit_box_height = 60;
 
@@ -22,8 +29,10 @@ class Goat
 	get_older()
 	{
 		this.age++;
-		if (this.age == 20)
-			this.state = 1;
+		if (this.age == 20 && this.state < 5) {
+			this.age = 0;
+			this.state++;
+		}
 
 	}
 	
