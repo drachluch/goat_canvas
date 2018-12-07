@@ -23,6 +23,6 @@ var switch_button = document.getElementById("style_switch");
 switch_button.addEventListener("click", switch_css);
 
 let date = new Date();
-is_night_mode = date.getHours > 19 || date.getHours < 7;
+is_night_mode = date.getHours() > 19 || date.getHours() < 7;
 
 update_css();
