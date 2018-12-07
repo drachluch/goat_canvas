@@ -1,3 +1,4 @@
 #canvas{
-    background-image: url("resource/image/desert1.jpg");
+    background: url("resource/image/desert1.jpg") no-repeat;
+    background-size: 100%;
 }
