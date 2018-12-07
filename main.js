@@ -1,55 +1,62 @@
 
-function draw_goat(ctx, img, center, howbig) {
-	let width = img.width * howbig;
-	let height = img.height * howbig;
-	ctx.drawImage(img, center.x - width / 2, center.y - height / 2, width, height);
-}
-
-function draw_goats(ctx, img, direction, reduction, norme, count_goats, origine, first_size) {
-	let point = {x: origine.x, y: origine.y};
-	let size = first_size;
-	
-	for (var i = 0; i < count_goats; i++) {
-		draw_goat(ctx, img, point, size);
-		point = {x: point.x + direction.x * norme, y: point.y + direction.y * norme};
-		size = size * reduction;
+class Goat
+{
+	constructor(x, y)
+	{
+		this.x = x;
+		this.y = y;
 	}
 }
 
-var img = new Image();
-img.onload = function() {
-	var canvas = document.getElementById('canvas');
-	var ctx = canvas.getContext('2d');
+class Game
+{
+	constructor()
+	{
+		this.canvas = document.getElementById('canvas');
+		this.context = canvas.getContext('2d');
+		this.goats = [];
+		this.goat_image_scale = 0.2;
 
-	ctx.fillStyle = "yellow";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
+		this.goat_image = new Image();
+		this.goat_image.src = "resource/image/chevre_transparente3.png";
+
+		this.canvas.addEventListener("click", (event)=>{
+			this.goats.push(new Goat(event.offsetX, event.offsetY));
+		});
+	}
+
+	run()
+	{
+		setInterval(()=>{
+			this.update();
+			this.clear();
+			this.draw_all_goats();
+		}, 100)
+	}
 	
-	var direction = {x: 0, y: 0};
-	var reduction = .75;
-	var norme = 20;
-	var count_goats = 16;
-	var origine = {x: canvas.width / 2, y: canvas.width / 2};
-	var first_size = 5;
+	clear()
+	{
+		this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+	}
 	
-	draw_goats(ctx, img, direction, reduction, norme, count_goats, origine, first_size);
+	draw_goat(goat)
+	{
+		this.context.drawImage(this.goat_image, goat.x, goat.y, this.goat_image.width*this.goat_image_scale, this.goat_image.height*this.goat_image_scale);
+	}
 	
-	canvas.onclick = function(e) {
-		console.log(e);
-		let x = e.clientX - canvas.width / 2;
-		let y = e.clientY - canvas.height / 2;
-		let norme = Math.sqrt(x * x + y * y);
-		let direction = {x: x/norme, y: y/norme};
-		
-		draw_goats(ctx, img, direction, reduction, norme, count_goats, origine, first_size);
-	};
-	
+	draw_all_goats()
+	{
+		for (let goat of this.goats) {
+			this.draw_goat(goat);
+		}
+	}
+
+	update()
+	{
+
+	}
 }
-img.src = "resource/image/chevre_transparente3.png";
 
 
-
-
-
-
-
-
+let game = new Game();
+game.run();
