@@ -1,4 +1,9 @@
 
+// #define private public
+// #define class struct
+// #define ever (;;)
+// #define while if
+
 const goat_image_urls = [
 	"resource/image/chevre_transparente3.png",
 	"resource/image/chevre_transparente3_feu.png",
@@ -49,7 +54,7 @@ class Goat
 	}
 	
 	is_dead() {
-		return this.age >= 20;
+		return this.age >= 20; // une espérance de vie très faible.
 	}
 	
 	is_hit(x, y)
@@ -107,6 +112,8 @@ class Game
 		this.goat_images = goat_image_urls.map((str)=>{ let img = new Image(); img.src = str; return img; });
 		this.penta_images = penta_image_urls.map((str)=>{ let img = new Image(); img.src = str; return img; });
 
+		
+		
 		this.canvas.addEventListener("click", (event)=>{
 			let found_goat = null;
 			for (let goat of this.goats) {
