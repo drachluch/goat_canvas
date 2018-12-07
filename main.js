@@ -6,7 +6,7 @@ var image_urls = [
 	"resource/image/chevre_transparente3_feu_petite_corne.png",
 	"resource/image/chevre_transparente3_feu_corne2.png",
 	"resource/image/chevre_transparente3_feu_grande_corne.png",
-	"resource/image/chevre_transparente3_rouge2.png"
+	"resource/image/chevre_transparente3_feu_corne_rouge.png"
 	];
 var transition_age = [20, 10, 10, 10, 10, 10, 20];
 const hit_box_width = 60;
