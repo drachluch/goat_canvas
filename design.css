@@ -3,15 +3,16 @@ body {
 	padding: 0px;
 	margin: 0px;
 	
-	background-image: url("resource/image/Desert2.JPG");
-	background-color: lightblue;
+
 }
 
-.canvas {
+#canvas {
 	width: 100%;
 	height: 100%;
 	padding: 0px;
 	margin: 0px;
+	
+	background-image: url("resource/image/Desert2.JPG");
 }
 
 * { margin:0; padding:0; } /* to remove the top and left whitespace */
