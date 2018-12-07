@@ -1,19 +1,26 @@
 
-var image_urls = [
+const goat_image_urls = [
 	"resource/image/chevre_transparente3.png",
 	"resource/image/chevre_transparente3_feu.png",
 	"resource/image/chevre_transparente3_feu_corne.png",
 	"resource/image/chevre_transparente3_feu_petite_corne.png",
 	"resource/image/chevre_transparente3_feu_corne2.png",
 	"resource/image/chevre_transparente3_feu_grande_corne.png",
+	"resource/image/chevre_transparente3_feu_corne_rouge.png",
 	"resource/image/chevre_transparente3_feu_corne_rouge.png"
 	];
-var transition_age = [20, 10, 10, 10, 10, 10, 20];
+
+const ninja_image_urls = [
+	"resource/image/chevre_transparente3.png",
+	"resource/image/chevre_transparente3.png"
+	];
+
+const penta_image_urls = [
+	"resource/image/chevre_transparente3.png"
+	];
+
 const hit_box_width = 60;
 const hit_box_height = 60;
-
-if (image_urls.length != transition_age.length)
-	console.log("it does not work this way.");
 
 class Goat
 {
@@ -38,7 +45,13 @@ class Goat
 			this.age = 0;
 			this.state++;
 		}
-
+		
+		if (this.state == 6 && this.age >= 10) {
+			if (Math.random() > .5) {
+				this.age = 0;
+				this.state = 7;
+			}
+		}
 	}
 	
 	is_dead() {
@@ -48,6 +61,50 @@ class Goat
 	is_hit(x, y)
 	{
 		return Math.abs(x - this.x) <= hit_box_width && Math.abs(y - this.y) <= hit_box_height;
+	}
+}
+
+class Pentagramme
+{
+	constructor(x, y)
+	{
+		this.x = x;
+		this.y = y;
+		this.age = 0;
+		this.state = 0;
+	}
+	
+	get_older()
+	{
+		this.age++;
+	}
+	
+	is_dead() {
+		return this.age > 5;
+	}
+}
+
+class Ninja
+{
+	constructor(x, y)
+	{
+		this.x = x;
+		this.y = y;
+		this.age = 0;
+		this.state = 0;
+	}
+	
+	get_older()
+	{
+		this.age++;
+		if (this.age > 10 && this.state == 0) {
+			this.state = 1;
+			this.age = 0;
+		}
+	}
+	
+	is_dead() {
+		return this.state == 1 && this.age > 10;
 	}
 }
 
@@ -71,10 +128,16 @@ class Game
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
 		this.context = canvas.getContext('2d');
+		
 		this.goats = [];
-		this.goat_image_scale = 0.2;
+		this.pentas = [];
+		this.ninjas = [];
+		
+		this.image_scale = 0.2;
 
-		this.goat_images = image_urls.map((str)=>{ let img = new Image(); img.src = str; return img; });
+		this.goat_images = goat_image_urls.map((str)=>{ let img = new Image(); img.src = str; return img; });
+		this.penta_images = penta_image_urls.map((str)=>{ let img = new Image(); img.src = str; return img; });
+		this.ninja_images = ninja_image_urls.map((str)=>{ let img = new Image(); img.src = str; return img; });
 
 		this.canvas.addEventListener("click", (event)=>{
 			let found_goat = null;
@@ -103,7 +166,7 @@ class Game
 		setInterval(()=>{
 			this.update();
 			this.clear();
-			this.draw_all_goats();
+			this.draw_all();
 		}, 100)
 	}
 	
@@ -114,30 +177,77 @@ class Game
 	
 	draw_goat(goat)
 	{
-		let width = this.goat_images[0].width*this.goat_image_scale;
-		let height = this.goat_images[0].height*this.goat_image_scale;
+		let width = this.goat_images[0].width*this.image_scale;
+		let height = this.goat_images[0].height*this.image_scale;
 		this.context.drawImage(this.goat_images[goat.state], goat.x - width / 2, goat.y - height / 2, width, height);
 	}
 	
-	draw_all_goats()
+	draw_ninja(ninja)
+	{
+		let width = this.ninja_images[0].width*this.image_scale;
+		let height = this.ninja_images[0].height*this.image_scale;
+		this.context.drawImage(this.ninja_images[ninja.state], ninja.x - width / 2, ninja.y - height / 2, width, height);
+	}
+	
+	draw_pentagramme(penta)
+	{
+		let width = this.penta_images[0].width*this.image_scale;
+		let height = this.penta_images[0].height*this.image_scale;
+		this.context.drawImage(this.penta_images[penta.state], penta.x - width / 2, penta.y - height / 2, width, height);
+	}
+	
+	draw_all()
 	{
 		for (let goat of this.goats) {
 			this.draw_goat(goat);
+		}
+		for (let ninja of this.ninjas) {
+			this.draw_ninja(ninja);
+		}
+		for (let penta of this.pentas) {
+			this.draw_pentagramme(penta);
 		}
 	}
 
 	update()
 	{
-		let count = this.goats.length;
+		this.ninjas = this.ninjas.filter( (ninja) => { return !ninja.is_dead(); });
+		this.pentas = this.pentas.filter( (penta) => { return !penta.is_dead(); });
+		
+		let count_ninja = this.ninjas.length;
+		let count_penta = this.pentas.length;
+		
+		for (let goat of this.goats) {
+			if (goat.is_dead())
+				if (goat.state == 6)
+					this.ninjas.push(new Ninja(goat.x, goat.y));
+				else
+					if (goat.state == 7)
+						this.pentas.push(new Pentagramme(goat.x, goat.y));
+		}
+		
 		this.goats = this.goats.filter( (goat) => { return !goat.is_dead(); });
 		
-		if (count != this.goats.length) {
+		if (count_ninja != this.ninjas.length) {
+			//this.audio_ninja_s[this.current_audio_ninja].play();
+			//this.current_audio_ninja = (this.current_audio_ninja + 1) % this.audio_ninja_s.length;
+		}
+		
+		if (count_penta != this.pentas.length) {
 			this.audio_agony_s[this.current_audio_agony].play();
 			this.current_audio_agony = (this.current_audio_agony + 1) % this.audio_agony_s.length;
 		}
 		
 		for (let goat of this.goats) {
 			goat.get_older();
+		}
+		
+		for (let ninja of this.ninjas) {
+			ninja.get_older();
+		}
+		
+		for (let penta of this.pentas) {
+			penta.get_older();
 		}
 	}
 }
