@@ -51,6 +51,10 @@ class Game
 	constructor()
 	{
 		this.canvas = document.getElementById('canvas');
+		
+		this.audio_agony = document.getElementById('audio_agony');
+		this.audio_cooling = document.getElementById('audio_cooling');
+		
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
 		this.context = canvas.getContext('2d');
@@ -70,8 +74,11 @@ class Game
 			
 			if (found_goat === null)
 				this.goats.push(new Goat(event.offsetX, event.offsetY));
-			else
+			else {
 				found_goat.reset();
+				this.audio_cooling.currentTime = 0;
+				this.audio_cooling.play();
+			}
 			
 		});
 	}
@@ -106,7 +113,14 @@ class Game
 
 	update()
 	{
+		let count = this.goats.length;
 		this.goats = this.goats.filter( (goat) => { return !goat.is_dead(); });
+		
+		if (count != this.goats.length) {
+			this.audio_agony.currentTime = 0;
+			this.audio_agony.play();
+		}
+		
 		for (let goat of this.goats) {
 			goat.get_older();
 		}
