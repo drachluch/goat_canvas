@@ -1,4 +1,10 @@
 
+function resizeCanvas() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+resizeCanvas();
+
 function draw_goat(ctx, img, center, howbig) {
 	let width = img.width * howbig;
 	let height = img.height * howbig;
@@ -20,14 +26,11 @@ var img = new Image();
 img.onload = function() {
 	var canvas = document.getElementById('canvas');
 	var ctx = canvas.getContext('2d');
-
-	ctx.fillStyle = "yellow";
-	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	
 	var direction = {x: 0, y: 0};
 	var reduction = .75;
 	var count_goats = 16;
-	var origine = {x: canvas.width / 2, y: canvas.width / 2};
+	var origine = {x: canvas.width / 2, y: canvas.height / 2};
 	var first_size = 5;
 	
 	draw_goats(ctx, img, direction, reduction, count_goats, origine, first_size);

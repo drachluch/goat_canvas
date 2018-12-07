@@ -2,6 +2,6 @@ body{
     background-color: white;
 }
 
-.game{
-    background-image: url(resource/image/Desert2.JPG);
+#canvas{
+    background-image: url(resource/image/Desert.jpg);
 }
